@@ -1,0 +1,25 @@
+---
+# copy new chrony_tmp.conf
+  - name: Copy chrony_tmp.conf
+    copy:
+  #    src: ./change_ntp/files/chrony_tmp.conf
+      src: chrony_tmp.conf
+      dest: /etc/chrony_tmp.conf
+      mode: '0644'
+      owner: root
+      group: root
+    become: yes
+
+#create backup chrony.conf
+  - name: Rename old chrony.conf to chrony_backup.conf
+    command: mv /etc/chrony.conf /etc/chrony_backup.conf
+
+#add new file
+  - name: Rename new chrony_tmp.conf to chrony.conf
+    command: mv /etc/chrony_tmp.conf /etc/chrony.conf
+
+#restart service
+  - name: Restart service chrony
+    ansible.builtin.service:
+      name: chronyd.service
+      state: restarted

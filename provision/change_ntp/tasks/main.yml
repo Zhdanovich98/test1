@@ -1,0 +1,31 @@
+---
+#First update file
+- name: First update line
+  ansible.builtin.lineinfile:
+    path: /etc/chrony.conf
+    regexp: '^pool 2\.rhel\.pool\.ntp\.org'
+    line: "pool\nserver"
+    backup: yes
+    backrefs: yes
+
+#change ntp to ntp.se in pool line
+- name: Change pool
+  ansible.builtin.lineinfile:
+    path: /etc/chrony.conf
+    regexp: '^pool'
+    line: "pool ntp.se"
+    backrefs: yes
+
+#change ntp to ntp.se in server line
+- name: Change server
+  ansible.builtin.lineinfile:
+    path: /etc/chrony.conf
+    regexp: '^server'
+    line: "server 0.se.pool.ntp.org"
+    backrefs: yes
+
+#restart service
+- name: Restart service chrony
+  ansible.builtin.service:
+    name: chronyd.service
+    state: restarted

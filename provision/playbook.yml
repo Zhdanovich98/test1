@@ -1,0 +1,9 @@
+---
+- hosts: ntp.edu.tentixo.com
+  gather_facts: yes
+  become: true
+  roles:
+    - role: change_ntp
+      when: ansible_os_family == 'RedHat'
+#    - role: change_ntp_old
+#      when: ansible_os_family == 'RedHat'
